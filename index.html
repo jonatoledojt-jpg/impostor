@@ -542,8 +542,12 @@ function render(){
   // yo
   drawBean(myPos.x,myPos.y,COLORS[me.color],moving,false,iAmGhost);nameTag(myPos.x,myPos.y,me.name,iAmGhost);
   cx.restore();
-  // viñeta
-  const vg=cx.createRadialGradient(W/2,H/2,H*.34,W/2,H/2,H*.82);vg.addColorStop(0,"#0000");vg.addColorStop(1,"#000a");cx.fillStyle=vg;cx.fillRect(0,0,W,H);
+  // visión limitada (niebla): solo ves lo que está cerca; el resto a oscuras
+  let visR=(myRole==="impostor"?360:235);if(!myAlive())visR=6000;
+  const rpx=visR*VIEW;
+  const vg=cx.createRadialGradient(W/2,H/2,rpx*.5,W/2,H/2,rpx);
+  vg.addColorStop(0,"rgba(2,4,10,0)");vg.addColorStop(.72,"rgba(2,4,10,.15)");vg.addColorStop(1,"rgba(2,4,10,.96)");
+  cx.fillStyle=vg;cx.fillRect(0,0,W,H);
   // joystick
   if(joy.active){const bx=joy.ox,by=joy.oy;cx.beginPath();cx.arc(bx,by,60,0,7);cx.fillStyle="#ffffff14";cx.fill();cx.lineWidth=2;cx.strokeStyle="#ffffff30";cx.stroke();cx.beginPath();cx.arc(bx+joy.dx*55,by+joy.dy*55,26,0,7);cx.fillStyle="#ffffff44";cx.fill();}
 }
