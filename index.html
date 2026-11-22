@@ -366,6 +366,9 @@ function handleAction(pid,type,data){
       if(gs.phase!=="meeting"||!P||!P.alive||gs.meeting.votes[pid])return;
       gs.meeting.votes[pid]=data.target;broadcastState();
       if(Object.values(gs.players).filter(x=>x.alive).every(x=>gs.meeting.votes[x.id]))resolveMeeting();break;
+    case "restart":
+      if(gs.phase==="end"){const ps=presenceList();if(ps.length>=3)startGame(ps);else{toastAll("Faltan jugadores para otra ronda");resetToLobby();}}
+      break;
     case "again": if(gs.phase==="end")resetToLobby();break;
   }
 }
@@ -396,7 +399,7 @@ function applyState(){
 }
 
 /* ---- revelación ---- */
-function showReveal(){revealShown=true;const rv=$("roleReveal");rv.className="reveal on "+(myRole==="impostor"?"imp":"crew");$("revealBean").innerHTML=beanSVG(COLORS[me.color],90);if(myRole==="impostor"){$("revealRole").textContent="IMPOSTOR";$("revealDesc").textContent="Acércate a un tripulante y elimínalo sin que te pillen. Finge que haces tareas.";beep(180,.3,"sawtooth");vibrate([80,40,80]);}else{$("revealRole").textContent="TRIPULANTE";$("revealDesc").textContent="Camina por la nave, completa tus tareas y descubre al impostor.";beep(740,.2);vibrate(40);}}
+function showReveal(){revealShown=true;myPos={x:SPAWN.x+(Math.random()*60-30),y:SPAWN.y+(Math.random()*40-20)};others={};const rv=$("roleReveal");rv.className="reveal on "+(myRole==="impostor"?"imp":"crew");$("revealBean").innerHTML=beanSVG(COLORS[me.color],90);if(myRole==="impostor"){$("revealRole").textContent="IMPOSTOR";$("revealDesc").textContent="Acércate a un tripulante y elimínalo sin que te pillen. Finge que haces tareas.";beep(180,.3,"sawtooth");vibrate([80,40,80]);}else{$("revealRole").textContent="TRIPULANTE";$("revealDesc").textContent="Camina por la nave, completa tus tareas y descubre al impostor.";beep(740,.2);vibrate(40);}}
 $("btnRevealOk").onclick=()=>{$("roleReveal").className="reveal";applyState();};
 
 /* ======================= JUEGO: NAVE ======================= */
@@ -571,8 +574,8 @@ function renderMeeting(){const m=gs.meeting;if(!m)return;$("meetReason").textCon
 function tickMeeting(){clearInterval(meetTick);const u=()=>{if(!gs||gs.phase!=="meeting"){clearInterval(meetTick);return;}$("meetTimer").textContent=Math.max(0,Math.ceil((gs.meeting.endsAt-Date.now())/1000));};u();meetTick=setInterval(u,300);}
 
 /* ======================= FIN ======================= */
-function renderEnd(){const w=gs.winner;const iWon=(w.who==="impostor"&&myRole==="impostor")||(w.who==="crew"&&myRole==="crew");$("endEmoji").textContent=w.who==="impostor"?"🔪":"🏆";$("endTitle").textContent=w.who==="impostor"?"Ganan los impostores":"Ganan los tripulantes";$("endTitle").style.color=w.who==="impostor"?"#ff8b97":"#8affc0";$("endSub").textContent=w.reason+(myRole?(iWon?" — ¡Ganaste! 🎉":" — Perdiste 😅"):"");const g=$("endImpostors");g.innerHTML="";(gs.impostorIds||[]).forEach(id=>{const p=gs.players[id];if(p)g.appendChild(chip(p,false));});if(isHost){$("btnPlayAgain").style.display="block";$("endWaitHost").style.display="none";}else{$("btnPlayAgain").style.display="none";$("endWaitHost").style.display="block";}beep(iWon?880:200,.3);}
-$("btnPlayAgain").onclick=()=>send("again",{});
+function renderEnd(){const w=gs.winner;const iWon=(w.who==="impostor"&&myRole==="impostor")||(w.who==="crew"&&myRole==="crew");$("endEmoji").textContent=w.who==="impostor"?"🔪":"🏆";$("endTitle").textContent=w.who==="impostor"?"Ganan los impostores":"Ganan los tripulantes";$("endTitle").style.color=w.who==="impostor"?"#ff8b97":"#8affc0";$("endSub").textContent=w.reason+(myRole?(iWon?" — ¡Ganaste! 🎉":" — Perdiste 😅"):"");const g=$("endImpostors");g.innerHTML="";(gs.impostorIds||[]).forEach(id=>{const p=gs.players[id];if(p)g.appendChild(chip(p,false));});$("btnPlayAgain").style.display="block";$("btnPlayAgain").textContent="🔄 Jugar de nuevo";$("endWaitHost").style.display="none";beep(iWon?880:200,.3);}
+$("btnPlayAgain").onclick=()=>{send("restart",{});toast("Reiniciando partida…",1500);};
 
 /* estrellas */
 (function(){const c=$("stars"),x=c.getContext("2d");let w,h,st=[];function rs(){w=c.width=innerWidth;h=c.height=innerHeight;st=[];for(let i=0;i<60;i++)st.push({x:Math.random()*w,y:Math.random()*h,r:Math.random()*1.4+.2,s:Math.random()*.3+.05});}rs();addEventListener("resize",rs);(function lp(){x.clearRect(0,0,w,h);x.fillStyle="#fff";st.forEach(s=>{s.y+=s.s;if(s.y>h)s.y=0;x.globalAlpha=s.r;x.beginPath();x.arc(s.x,s.y,s.r,0,7);x.fill();});x.globalAlpha=1;requestAnimationFrame(lp);})();})();
