@@ -3,34 +3,27 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1, user-scalable=no">
-<meta name="theme-color" content="#0b1020">
+<meta name="theme-color" content="#070b16">
 <title>Impostor — Paz</title>
 <style>
   :root{
-    --bg:#070b16; --bg2:#0f1733; --card:#121a33; --card2:#1a2550;
-    --txt:#eaf0ff; --muted:#8ea0c9; --line:#263257;
-    --rojo:#e23b3b; --verde:#2fd27a; --amar:#ffd23f; --azul:#3b7fe2;
-    --acc:#5b7cff; --ok:#2fd27a; --mal:#ff5a6a;
+    --bg:#070b16; --card:#121a33; --txt:#eaf0ff; --muted:#8ea0c9; --line:#263257;
+    --acc:#5b7cff; --verde:#2fd27a; --amar:#ffd23f; --rojo:#ff5a6a;
   }
-  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-  html,body{margin:0;height:100%}
-  body{
-    font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
-    background:radial-gradient(1200px 800px at 50% -10%,#15204a 0%,var(--bg) 60%);
-    color:var(--txt); overflow-x:hidden;
-    min-height:100%; min-height:100dvh;
-  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none}
+  html,body{margin:0;height:100%;overscroll-behavior:none}
+  body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:radial-gradient(1200px 800px at 50% -10%,#15204a 0%,var(--bg) 60%);color:var(--txt);overflow:hidden;min-height:100dvh}
   .stars{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.5}
-  .wrap{position:relative;z-index:1;max-width:520px;margin:0 auto;padding:16px 16px 40px;min-height:100dvh;display:flex;flex-direction:column}
+  .wrap{position:relative;z-index:1;max-width:520px;margin:0 auto;padding:16px 16px 40px;min-height:100dvh;display:flex;flex-direction:column;overflow-y:auto;max-height:100dvh}
   h1{font-size:1.9rem;margin:.2em 0 .1em;letter-spacing:.5px}
   h2{font-size:1.2rem;margin:.6em 0 .3em}
-  .muted{color:var(--muted)}
+  .muted{color:var(--muted)} .center{text-align:center}
   .sub{color:var(--muted);font-size:.92rem;margin:0 0 18px}
   .screen{display:none;flex:1;flex-direction:column}
   .screen.on{display:flex}
   .card{background:linear-gradient(180deg,var(--card),#0e1630);border:1px solid var(--line);border-radius:18px;padding:16px;margin:10px 0}
   label{display:block;font-size:.82rem;color:var(--muted);margin:10px 0 5px;text-transform:uppercase;letter-spacing:.5px}
-  input{width:100%;padding:14px 14px;border-radius:12px;border:1px solid var(--line);background:#0c1430;color:var(--txt);font-size:1.1rem;outline:none}
+  input{width:100%;padding:14px;border-radius:12px;border:1px solid var(--line);background:#0c1430;color:var(--txt);font-size:1.1rem;outline:none}
   input:focus{border-color:var(--acc)}
   .code-in{text-align:center;letter-spacing:8px;text-transform:uppercase;font-weight:800;font-size:1.6rem}
   button{font-family:inherit;cursor:pointer}
@@ -42,86 +35,85 @@
   .btn.rojo:active{box-shadow:0 3px 0 #7e1622}
   .btn.verde{background:linear-gradient(180deg,#45e08c,#1fa862);box-shadow:0 6px 0 #0f6b3d}
   .btn.verde:active{box-shadow:0 3px 0 #0f6b3d}
-  .btn:disabled{opacity:.4;box-shadow:none;transform:none;cursor:default}
-  .row{display:flex;gap:10px}
-  .row>*{flex:1}
+  .btn:disabled{opacity:.4;box-shadow:none;transform:none}
   .colorgrid{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-top:6px}
-  .swatch{aspect-ratio:1;border-radius:50%;border:3px solid transparent;cursor:pointer;display:flex;align-items:center;justify-content:center}
+  .swatch{aspect-ratio:1;border-radius:50%;border:3px solid transparent;cursor:pointer}
   .swatch.sel{border-color:#fff;transform:scale(1.08)}
-  .swatch.taken{opacity:.25;pointer-events:none}
   .players{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin:8px 0}
   .pl{display:flex;flex-direction:column;align-items:center;width:72px;gap:4px}
-  .pl .nm{font-size:.8rem;text-align:center;max-width:72px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-  .pl.dead{opacity:.4;filter:grayscale(1)}
-  .bean{width:54px;height:62px;display:block}
+  .pl .nm{font-size:.8rem;max-width:72px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .bean{display:block}
   .tag{display:inline-block;font-size:.72rem;padding:3px 9px;border-radius:999px;background:#223;color:var(--muted);border:1px solid var(--line)}
   .tag.host{background:#2a2350;color:#ffd23f;border-color:#574a1a}
   .big-code{font-size:2.6rem;font-weight:900;letter-spacing:10px;text-align:center;background:#0c1430;border:1px dashed var(--acc);border-radius:14px;padding:14px;margin:4px 0 2px}
-  .center{text-align:center}
+  .row{display:flex;gap:10px}.row>*{flex:1}
   .pill{display:inline-flex;align-items:center;gap:8px;background:#0c1430;border:1px solid var(--line);border-radius:999px;padding:8px 14px;font-weight:700}
-  /* role reveal */
+  .hint{font-size:.85rem;color:var(--muted);margin-top:6px}
+  /* revelación */
   .reveal{position:fixed;inset:0;z-index:40;display:none;align-items:center;justify-content:center;flex-direction:column;text-align:center;padding:24px}
   .reveal.on{display:flex}
   .reveal.crew{background:radial-gradient(circle at 50% 40%,#123a6b,#05101f)}
   .reveal.imp{background:radial-gradient(circle at 50% 40%,#6b1222,#120305)}
   .reveal h1{font-size:2.6rem;margin:12px 0 4px}
-  /* progress */
-  .prog{height:18px;border-radius:999px;background:#0c1430;border:1px solid var(--line);overflow:hidden;margin:6px 0}
+  /* JUEGO: lienzo de la nave */
+  #s-play{display:none;position:fixed;inset:0;z-index:5;padding:0;margin:0}
+  #s-play.on{display:block}
+  #game{position:absolute;inset:0;width:100%;height:100%;touch-action:none;background:#05080f}
+  .hud-top{position:absolute;top:0;left:0;right:0;z-index:6;display:flex;justify-content:space-between;align-items:flex-start;padding:10px;pointer-events:none}
+  .hud-top .pill{pointer-events:auto;font-size:.85rem;padding:6px 12px}
+  .progwrap{position:absolute;top:52px;left:10px;right:10px;z-index:6;pointer-events:none}
+  .prog{height:14px;border-radius:999px;background:#0c1430cc;border:1px solid var(--line);overflow:hidden}
   .prog>i{display:block;height:100%;background:linear-gradient(90deg,#2fd27a,#8affc0);width:0;transition:width .4s}
-  .tasklist{margin:6px 0}
-  .task{display:flex;align-items:center;gap:12px;background:#0e1630;border:1px solid var(--line);border-radius:12px;padding:13px 14px;margin:8px 0;font-size:1.02rem}
-  .task .ic{width:26px;height:26px;flex:none;border-radius:7px;border:2px solid var(--muted);display:flex;align-items:center;justify-content:center;font-weight:900}
-  .task.done{opacity:.55}
-  .task.done .ic{background:var(--verde);border-color:var(--verde);color:#06331d}
-  .barbottom{position:sticky;bottom:0;padding-top:10px;background:linear-gradient(0deg,var(--bg),transparent)}
-  /* modal */
+  .actbtns{position:absolute;right:16px;bottom:30px;z-index:7;display:flex;flex-direction:column;gap:12px;align-items:flex-end}
+  .abtn{width:88px;height:88px;border-radius:50%;border:none;font-size:.8rem;font-weight:800;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;box-shadow:0 6px 0 #0006}
+  .abtn .ic{font-size:1.6rem;line-height:1}
+  .abtn:active{transform:translateY(3px)}
+  .abtn.use{background:linear-gradient(180deg,#45e08c,#1fa862)}
+  .abtn.kill{background:linear-gradient(180deg,#ff5a6a,#b11)}
+  .abtn.report{background:linear-gradient(180deg,#ffd23f,#d49a00);color:#3a2a00}
+  .abtn.emg{background:linear-gradient(180deg,#5b7cff,#3b5bdb)}
+  .abtn:disabled{opacity:.35;box-shadow:none}
+  .ghosttag{position:absolute;top:92px;left:50%;transform:translateX(-50%);z-index:6;background:#0c1430cc;border:1px solid var(--line);border-radius:999px;padding:6px 16px;font-size:.85rem}
+  /* modales */
   .modal{position:fixed;inset:0;z-index:30;display:none;align-items:flex-end;justify-content:center;background:rgba(2,6,16,.72)}
   .modal.on{display:flex}
   .sheet{background:linear-gradient(180deg,#162043,#0d1530);border:1px solid var(--line);border-top-left-radius:22px;border-top-right-radius:22px;width:100%;max-width:520px;padding:18px 18px calc(18px + env(safe-area-inset-bottom));animation:up .22s ease}
   @keyframes up{from{transform:translateY(40px);opacity:.3}to{transform:none;opacity:1}}
   .closeline{width:44px;height:5px;border-radius:9px;background:#334;margin:0 auto 12px}
-  /* mini games */
-  .wires{display:flex;justify-content:space-between;gap:30px;position:relative;margin:14px 0}
-  .wcol{display:flex;flex-direction:column;gap:18px;z-index:2}
-  .wnode{width:40px;height:40px;border-radius:9px;border:2px solid #0008}
-  .wnode.sel{outline:3px solid #fff}
-  .wsvg{position:absolute;inset:0;z-index:1;pointer-events:none}
+  /* mini juegos */
   .pad{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;max-width:260px;margin:10px auto}
   .key{padding:18px;border-radius:12px;background:#1a2550;border:1px solid var(--line);font-size:1.4rem;font-weight:800;text-align:center}
   .keydisp{text-align:center;font-size:1.8rem;letter-spacing:6px;font-weight:900;margin:6px 0}
   .seqgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:12px 0}
   .seqbtn{aspect-ratio:1;border-radius:14px;background:#1a2550;border:1px solid var(--line);font-size:1.5rem;font-weight:900;display:flex;align-items:center;justify-content:center}
   .seqbtn.go{background:var(--verde);color:#06331d}
-  .hold{width:150px;height:150px;border-radius:50%;margin:14px auto;background:#1a2550;border:3px solid var(--acc);display:flex;align-items:center;justify-content:center;font-weight:800;position:relative;overflow:hidden;user-select:none}
+  .hold{width:150px;height:150px;border-radius:50%;margin:14px auto;background:#1a2550;border:3px solid var(--acc);display:flex;align-items:center;justify-content:center;font-weight:800;position:relative;overflow:hidden}
   .hold .fill{position:absolute;left:0;bottom:0;width:100%;background:var(--verde);height:0}
   .hold span{position:relative;z-index:2}
-  /* meeting */
+  .wires{display:flex;justify-content:space-between;gap:30px;margin:14px 0}
+  .wcol{display:flex;flex-direction:column;gap:18px}
+  .wnode{width:40px;height:40px;border-radius:9px;border:2px solid #0008}
+  .wnode.sel{outline:3px solid #fff}
+  /* reunión */
   .voterow{display:flex;align-items:center;gap:12px;background:#0e1630;border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin:8px 0}
   .voterow.sel{border-color:var(--amar);background:#1c1f10}
-  .voterow .nm{flex:1;font-weight:700}
-  .voterow.dead{opacity:.4}
+  .voterow .nm{flex:1;font-weight:700}.voterow.dead{opacity:.4}
   .vcount{font-size:.8rem;color:var(--muted)}
-  .timer{font-size:2rem;font-weight:900;text-align:center;letter-spacing:2px}
-  .killbtn{position:fixed;left:50%;transform:translateX(-50%);bottom:20px;z-index:20;width:92%;max-width:490px}
-  .toast{position:fixed;top:14px;left:50%;transform:translateX(-50%);z-index:50;background:#1a2550;border:1px solid var(--line);padding:12px 18px;border-radius:12px;font-weight:700;box-shadow:0 10px 30px #0008;display:none}
+  .timer{font-size:2rem;font-weight:900;text-align:center}
+  .toast{position:fixed;top:14px;left:50%;transform:translateX(-50%);z-index:50;background:#1a2550;border:1px solid var(--line);padding:12px 18px;border-radius:12px;font-weight:700;box-shadow:0 10px 30px #0008;display:none;max-width:92%;text-align:center}
   .toast.on{display:block;animation:up .2s}
   .end-emoji{font-size:4rem;text-align:center;margin:8px 0}
-  .flash{animation:fl .5s}
-  @keyframes fl{0%{background:#2fd27a44}100%{background:transparent}}
-  .hint{font-size:.85rem;color:var(--muted);margin-top:6px}
-  .stepnum{display:inline-flex;width:22px;height:22px;border-radius:50%;background:var(--acc);color:#fff;align-items:center;justify-content:center;font-size:.8rem;font-weight:800;margin-right:6px}
 </style>
 </head>
 <body>
 <canvas class="stars" id="stars"></canvas>
 <div class="toast" id="toast"></div>
 
-<div class="wrap">
-
-  <!-- ░░ INICIO ░░ -->
+<div class="wrap" id="wrap">
+  <!-- INICIO -->
   <section class="screen on" id="s-home">
     <h1>👾 Impostor</h1>
-    <p class="sub">El juego de descubrir al traidor. Cada uno en su teléfono.</p>
+    <p class="sub">Caminen por la nave, hagan tareas y descubran al traidor. Cada uno en su teléfono.</p>
     <div class="card">
       <label>Tu nombre</label>
       <input id="homeName" maxlength="12" placeholder="Ej: Jona" autocomplete="off">
@@ -130,93 +122,78 @@
     </div>
     <button class="btn verde" id="btnCreate">Crear sala</button>
     <button class="btn ghost" id="btnJoinScreen">Entrar a una sala</button>
-    <p class="hint center" style="margin-top:18px">Para 4 a 12 jugadores. Hablen en persona o por videollamada mientras juegan.</p>
+    <p class="hint center" style="margin-top:18px">Para 4 a 10 jugadores. Hablen en persona o por videollamada.</p>
   </section>
 
-  <!-- ░░ UNIRSE ░░ -->
+  <!-- UNIRSE -->
   <section class="screen" id="s-join">
     <h1>Entrar a sala</h1>
     <p class="sub">Pide el código al que creó la sala.</p>
-    <div class="card">
-      <label>Código de sala</label>
-      <input id="joinCode" class="code-in" maxlength="4" placeholder="ABCD" autocomplete="off">
-    </div>
+    <div class="card"><label>Código de sala</label>
+      <input id="joinCode" class="code-in" maxlength="4" placeholder="ABCD" autocomplete="off"></div>
     <button class="btn verde" id="btnJoin">Entrar</button>
     <button class="btn ghost" id="btnBackHome">Volver</button>
   </section>
 
-  <!-- ░░ LOBBY ░░ -->
+  <!-- LOBBY -->
   <section class="screen" id="s-lobby">
     <h1>Sala de espera</h1>
-    <p class="sub">Comparte el código. El juego parte cuando el anfitrión diga.</p>
+    <p class="sub">Comparte el código. El anfitrión comienza.</p>
     <div class="center">
       <div class="big-code" id="lobbyCode">----</div>
       <button class="btn ghost" id="btnShare" style="width:auto;display:inline-block;padding:10px 20px;margin-top:6px">📤 Compartir código</button>
     </div>
-    <div class="card">
-      <h2 style="margin-top:0">Jugadores <span class="muted" id="lobbyCount"></span></h2>
-      <div class="players" id="lobbyPlayers"></div>
-    </div>
+    <div class="card"><h2 style="margin-top:0">Jugadores <span class="muted" id="lobbyCount"></span></h2>
+      <div class="players" id="lobbyPlayers"></div></div>
     <div id="hostControls" style="display:none">
-      <label>Impostores</label>
-      <div class="row" id="impPick"></div>
+      <label>Impostores</label><div class="row" id="impPick"></div>
       <button class="btn verde" id="btnStart">🚀 Comenzar partida</button>
     </div>
-    <p class="hint center" id="waitHost" style="display:none">Esperando a que el anfitrión comience…</p>
+    <p class="hint center" id="waitHost" style="display:none">Esperando al anfitrión…</p>
     <button class="btn ghost" id="btnLeaveLobby">Salir</button>
   </section>
 
-  <!-- ░░ JUEGO (TAREAS) ░░ -->
-  <section class="screen" id="s-game">
-    <div style="display:flex;align-items:center;justify-content:space-between;gap:10px">
-      <div class="pill" id="roleBadge">—</div>
-      <div class="pill" id="aliveBadge">—</div>
-    </div>
-
-    <div class="card" id="crewPanel">
-      <h2 style="margin-top:0">Tareas del grupo</h2>
-      <div class="prog"><i id="progBar"></i></div>
-      <p class="muted" id="progTxt" style="margin:4px 0 0">0%</p>
-      <div class="tasklist" id="taskList"></div>
-    </div>
-
-    <div class="card" id="ghostNote" style="display:none;text-align:center">
-      👻 <b>Eres fantasma.</b><br><span class="muted">Puedes seguir haciendo tareas para ayudar a tu equipo, pero no puedes hablar en las reuniones.</span>
-    </div>
-
-    <div class="barbottom">
-      <button class="btn ghost" id="btnEmergency">🔔 Reunión de emergencia</button>
-    </div>
-    <button class="btn rojo killbtn" id="btnKill" style="display:none">🔪 Eliminar</button>
-  </section>
-
-  <!-- ░░ REUNIÓN ░░ -->
+  <!-- REUNIÓN -->
   <section class="screen" id="s-meeting">
     <h1 style="margin-bottom:0">🔔 ¡Reunión!</h1>
-    <p class="sub" id="meetReason">Alguien pidió reunión.</p>
+    <p class="sub" id="meetReason"></p>
     <div class="timer" id="meetTimer">45</div>
     <p class="center muted" style="margin-top:0">Discutan hablando. Luego voten.</p>
     <div id="voteList"></div>
     <p class="hint center" id="voteNote"></p>
   </section>
 
-  <!-- ░░ FIN ░░ -->
+  <!-- FIN -->
   <section class="screen" id="s-end">
     <div class="end-emoji" id="endEmoji">🎉</div>
     <h1 class="center" id="endTitle">Fin</h1>
     <p class="sub center" id="endSub"></p>
-    <div class="card">
-      <h2 style="margin-top:0">Los impostores eran:</h2>
-      <div class="players" id="endImpostors"></div>
-    </div>
+    <div class="card"><h2 style="margin-top:0">Los impostores eran:</h2>
+      <div class="players" id="endImpostors"></div></div>
     <button class="btn verde" id="btnPlayAgain" style="display:none">Jugar de nuevo</button>
-    <p class="hint center" id="endWaitHost" style="display:none">Esperando al anfitrión para otra ronda…</p>
+    <p class="hint center" id="endWaitHost" style="display:none">Esperando al anfitrión…</p>
     <button class="btn ghost" id="btnEndLeave">Salir</button>
   </section>
-
 </div>
 
-<!-- Revelación de rol -->
+<!-- JUEGO (fuera del wrap, pantalla completa) -->
+<section id="s-play">
+  <canvas id="game"></canvas>
+  <div class="hud-top">
+    <div class="pill" id="roleBadge">—</div>
+    <div class="pill" id="aliveBadge">—</div>
+  </div>
+  <div class="progwrap"><div class="prog"><i id="progBar"></i></div></div>
+  <div class="ghosttag" id="ghostTag" style="display:none">👻 Eres fantasma — ayuda haciendo tareas</div>
+  <div class="actbtns">
+    <button class="abtn emg" id="aEmg" style="display:none"><span class="ic">🔔</span>Reunión</button>
+    <button class="abtn report" id="aReport" style="display:none"><span class="ic">📢</span>Reportar</button>
+    <button class="abtn use" id="aUse" style="display:none"><span class="ic">🛠️</span>Tarea</button>
+    <button class="abtn kill" id="aKill" style="display:none"><span class="ic">🔪</span>Eliminar</button>
+  </div>
+</section>
+
+<!-- revelación -->
 <div class="reveal" id="roleReveal">
   <div id="revealBean"></div>
   <h1 id="revealRole">—</h1>
@@ -224,635 +201,383 @@
   <button class="btn" id="btnRevealOk" style="max-width:260px">Entendido</button>
 </div>
 
-<!-- Modal mini-juego -->
-<div class="modal" id="taskModal">
-  <div class="sheet">
-    <div class="closeline"></div>
-    <h2 id="taskTitle" style="margin-top:0">Tarea</h2>
-    <div id="taskBody"></div>
-  </div>
-</div>
-
-<!-- Modal eliminar -->
-<div class="modal" id="killModal">
-  <div class="sheet">
-    <div class="closeline"></div>
-    <h2 style="margin-top:0">¿A quién eliminas?</h2>
-    <div id="killList"></div>
-    <button class="btn ghost" id="btnKillCancel">Cancelar</button>
-  </div>
-</div>
+<!-- modal mini-juego -->
+<div class="modal" id="taskModal"><div class="sheet"><div class="closeline"></div>
+  <h2 id="taskTitle" style="margin-top:0">Tarea</h2><div id="taskBody"></div></div></div>
 
 <script type="module">
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/+esm";
-
 const SUPABASE_URL  = "https://foqzexzlxbypbwtubrgx.supabase.co";
 const SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZvcXpleHpseGJ5cGJ3dHVicmd4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODkzMzc0NDcsImV4cCI6MjEwNDkxMzQ0N30.MZT_YRe98Xqmt1MLM4ya8QkGSpdehWfgSSLMFxPv_Dk";
-const sb = createClient(SUPABASE_URL, SUPABASE_ANON, { realtime:{ params:{ eventsPerSecond: 20 } } });
+const sb = createClient(SUPABASE_URL, SUPABASE_ANON, { realtime:{ params:{ eventsPerSecond: 30 } } });
 
-/* ---------- colores estilo Among Us ---------- */
-const COLORS = {
-  rojo:"#c51111", azul:"#132ed1", verde:"#117f2d", rosado:"#ed54ba",
-  naranjo:"#ef7d0d", amarillo:"#f5f557", negro:"#3f474e", blanco:"#d6e0f0",
-  morado:"#6b2fbb", cafe:"#71491e", cyan:"#38fedc", lima:"#50ef39"
-};
-const COLORNAMES = Object.keys(COLORS);
+/* colores */
+const COLORS={rojo:"#c51111",azul:"#132ed1",verde:"#117f2d",rosado:"#ed54ba",naranjo:"#ef7d0d",amarillo:"#f5f557",negro:"#3f474e",blanco:"#d6e0f0",morado:"#6b2fbb",cafe:"#71491e",cyan:"#38fedc",lima:"#50ef39"};
+const CN=Object.keys(COLORS);
 
-/* ---------- estado local ---------- */
-let me = { id: rid(), name:"", color:null };
-let isHost = false;
-let roomCode = null;
-let channel = null;
-let gs = null;          // estado público recibido/propio
-let myRole = null;      // 'crew' | 'impostor'
-let myTasks = [];       // [{id,type,done}]
-let impostorCount = 1;
-let meetTick = null, killTick = null;
-let revealShown = false;
+/* ---- MAPA DE LA NAVE ---- */
+const WORLD={w:1200,h:900};
+const ROOMS=[ // zonas caminables + nombre
+  {x:100,y:420,w:1000,h:60,n:""},            // pasillo horizontal
+  {x:570,y:100,w:60,h:700,n:""},             // pasillo vertical
+  {x:100,y:330,w:240,h:240,n:"Reactor"},
+  {x:860,y:330,w:240,h:240,n:"Bodega"},
+  {x:460,y:100,w:280,h:240,n:"Cafetería"},
+  {x:460,y:560,w:280,h:240,n:"Eléctrico"},
+];
+const EMG={x:600,y:215};                      // botón de emergencia (Cafetería)
+const SPAWN={x:600,y:300};
+const TASKPOINTS=[ // puntos de tarea en la nave
+  {id:"t1",x:180,y:470,type:"wires"},
+  {id:"t2",x:300,y:380,type:"hold"},
+  {id:"t3",x:1020,y:470,type:"pad"},
+  {id:"t4",x:960,y:380,type:"seq"},
+  {id:"t5",x:600,y:680,type:"hold"},
+  {id:"t6",x:530,y:720,type:"wires"},
+  {id:"t7",x:680,y:160,type:"pad"},
+  {id:"t8",x:520,y:300,type:"seq"},
+];
+const TASKLABEL={hold:"🔋 Descargar datos",seq:"🔢 Secuencia",wires:"🔌 Cables",pad:"⌨️ Código"};
+const SPEED=3.0, KILLDIST=78, USEDIST=62, REPORTDIST=85, EMGDIST=70;
 
-/* ---------- utilidades ---------- */
-function rid(){ return Math.random().toString(36).slice(2,10); }
-function roomId(){ return "imp-" + roomCode; }
-function $(id){ return document.getElementById(id); }
-function show(scr){ document.querySelectorAll(".screen").forEach(s=>s.classList.remove("on")); $(scr).classList.add("on"); window.scrollTo(0,0); }
-function toast(msg, ms=2600){ const t=$("toast"); t.textContent=msg; t.classList.add("on"); clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove("on"),ms); }
-function beep(freq=660,dur=.12,type="sine"){ try{ const a=new (window.AudioContext||window.webkitAudioContext)(); const o=a.createOscillator(),g=a.createGain(); o.type=type;o.frequency.value=freq;o.connect(g);g.connect(a.destination);g.gain.value=.08;o.start();o.stop(a.currentTime+dur);setTimeout(()=>a.close(),dur*1000+50);}catch(e){} }
-function vibrate(ms){ try{ navigator.vibrate&&navigator.vibrate(ms);}catch(e){} }
+/* ---- estado ---- */
+let me={id:rid(),name:"",color:CN[Math.floor(Math.random()*CN.length)]};
+let isHost=false, roomCode=null, channel=null;
+let gs=null, myRole=null, myTasks=[], impostorCount=1, revealShown=false;
+let myPos={x:SPAWN.x,y:SPAWN.y}, moving=false;
+let others={}; // id -> {x,y,tx,ty,name,color}
+let meetTick=null, lastPosSent=0, raf=null, modalOpen=false;
+let near={task:null,body:null,emg:false,killTarget:null};
 
-function beanSVG(colorHex, size=54){
-  return `<svg class="bean" viewBox="0 0 100 115" width="${size}" height="${Math.round(size*1.15)}">
-    <ellipse cx="50" cy="108" rx="30" ry="6" fill="#0004"/>
-    <path d="M26 40 Q26 14 50 14 Q74 14 74 40 L74 86 Q74 104 56 104 L44 104 Q26 104 26 86 Z" fill="${colorHex}"/>
-    <path d="M22 50 Q14 50 14 64 L14 80 Q14 90 24 88 L26 50 Z" fill="${colorHex}"/>
-    <path d="M26 40 Q26 14 50 14 Q74 14 74 40 L74 50 Q50 44 26 50 Z" fill="#fff2" />
-    <ellipse cx="60" cy="40" rx="20" ry="14" fill="#bfe7ff"/>
-    <ellipse cx="60" cy="40" rx="20" ry="14" fill="none" stroke="#7fb4d6" stroke-width="3"/>
-    <ellipse cx="54" cy="36" rx="6" ry="4" fill="#fff8"/>
-  </svg>`;
+function rid(){return Math.random().toString(36).slice(2,10);}
+function roomId(){return "imp-"+roomCode;}
+function $(id){return document.getElementById(id);}
+function show(scr){ // scr sin #
+  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("on"));
+  $("s-play").classList.remove("on"); $("wrap").style.display="flex";
+  if(scr==="s-play"){ $("wrap").style.display="none"; $("s-play").classList.add("on"); }
+  else $(scr).classList.add("on");
 }
+function toast(m,ms=2600){const t=$("toast");t.textContent=m;t.classList.add("on");clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove("on"),ms);}
+function beep(f=660,d=.12,ty="sine"){try{const a=new(window.AudioContext||window.webkitAudioContext)(),o=a.createOscillator(),g=a.createGain();o.type=ty;o.frequency.value=f;o.connect(g);g.connect(a.destination);g.gain.value=.07;o.start();o.stop(a.currentTime+d);setTimeout(()=>a.close(),d*1000+60);}catch(e){}}
+function vibrate(m){try{navigator.vibrate&&navigator.vibrate(m);}catch(e){}}
+function esc(s){return(s||"").replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function dist(a,b){return Math.hypot(a.x-b.x,a.y-b.y);}
 
-/* ---------- INICIO: selector de color ---------- */
-function paintHomeColors(){
-  const g=$("homeColors"); g.innerHTML="";
-  COLORNAMES.forEach(cn=>{
-    const d=document.createElement("div");
-    d.className="swatch"+(me.color===cn?" sel":"");
-    d.style.background=COLORS[cn];
-    d.onclick=()=>{ me.color=cn; paintHomeColors(); };
-    g.appendChild(d);
-  });
-}
-me.color = COLORNAMES[Math.floor(Math.random()*COLORNAMES.length)];
-paintHomeColors();
+/* bean para listas (SVG) */
+function beanSVG(c,size=54){return `<svg class="bean" viewBox="0 0 100 115" width="${size}" height="${Math.round(size*1.15)}">
+<ellipse cx="50" cy="108" rx="30" ry="6" fill="#0004"/>
+<path d="M26 40 Q26 14 50 14 Q74 14 74 40 L74 86 Q74 104 56 104 L44 104 Q26 104 26 86 Z" fill="${c}"/>
+<path d="M22 50 Q14 50 14 64 L14 80 Q14 90 24 88 L26 50 Z" fill="${c}"/>
+<path d="M26 40 Q26 14 50 14 Q74 14 74 40 L74 50 Q50 44 26 50 Z" fill="#fff2"/>
+<ellipse cx="60" cy="40" rx="20" ry="14" fill="#bfe7ff"/><ellipse cx="60" cy="40" rx="20" ry="14" fill="none" stroke="#7fb4d6" stroke-width="3"/>
+<ellipse cx="54" cy="36" rx="6" ry="4" fill="#fff8"/></svg>`;}
 
-/* ---------- navegación inicial ---------- */
-$("btnJoinScreen").onclick=()=>{ if(!prep()) return; show("s-join"); };
+/* ---- selector color ---- */
+function paintColors(){const g=$("homeColors");g.innerHTML="";CN.forEach(cn=>{const d=document.createElement("div");d.className="swatch"+(me.color===cn?" sel":"");d.style.background=COLORS[cn];d.onclick=()=>{me.color=cn;paintColors();};g.appendChild(d);});}
+paintColors();
+
+/* ---- navegación ---- */
+$("btnJoinScreen").onclick=()=>{if(prep())show("s-join");};
 $("btnBackHome").onclick=()=>show("s-home");
-$("btnCreate").onclick=()=>{ if(!prep()) return; createRoom(); };
-$("btnJoin").onclick=()=>{ const c=$("joinCode").value.trim().toUpperCase(); if(c.length<4){toast("Código de 4 letras");return;} joinRoom(c); };
+$("btnCreate").onclick=()=>{if(prep())createRoom();};
+$("btnJoin").onclick=()=>{const c=$("joinCode").value.trim().toUpperCase();if(c.length<4){toast("Código de 4 letras");return;}joinRoom(c);};
 $("joinCode").addEventListener("input",e=>e.target.value=e.target.value.toUpperCase());
+function prep(){const n=$("homeName").value.trim();if(!n){toast("Escribe tu nombre");return false;}me.name=n.slice(0,12);return true;}
 
-function prep(){
-  const n=$("homeName").value.trim();
-  if(!n){ toast("Escribe tu nombre"); return false; }
-  if(!me.color){ toast("Elige un color"); return false; }
-  me.name=n.slice(0,12);
-  return true;
-}
-
-/* ---------- crear / unirse ---------- */
-async function createRoom(){
-  roomCode = randomCode();
-  isHost = true;
-  gs = freshGame();
-  await connect();
-  show("s-lobby");
-  renderLobby();
-}
-async function joinRoom(code){
-  roomCode = code; isHost=false;
-  await connect();
-  // pedir color si está tomado se resuelve visualmente; avisamos al host con join
-  show("s-lobby");
-  $("hostControls").style.display="none";
-  $("waitHost").style.display="block";
-}
-
-function randomCode(){ const L="ABCDEFGHJKLMNPQRSTUVWXYZ"; let c=""; for(let i=0;i<4;i++)c+=L[Math.floor(Math.random()*L.length)]; return c; }
+async function createRoom(){roomCode=randomCode();isHost=true;gs=freshGame();await connect();show("s-lobby");renderLobby();}
+async function joinRoom(c){roomCode=c;isHost=false;await connect();show("s-lobby");$("hostControls").style.display="none";$("waitHost").style.display="block";}
+function randomCode(){const L="ABCDEFGHJKLMNPQRSTUVWXYZ";let c="";for(let i=0;i<4;i++)c+=L[Math.floor(Math.random()*L.length)];return c;}
 
 async function connect(){
-  channel = sb.channel(roomId(), { config:{ presence:{ key: me.id }, broadcast:{ self:false } } });
-
-  channel.on("presence",{event:"sync"},()=>{ if(isHost) renderLobby(); else if(gs&&gs.phase==="lobby"&&!revealShown) renderLobbyRemote(); });
-
-  // jugadores -> host: acciones
-  channel.on("broadcast",{event:"action"},({payload})=>{ if(isHost) handleAction(payload.id,payload.type,payload.data); });
-  // host -> todos: estado público
-  channel.on("broadcast",{event:"state"},({payload})=>{ if(!isHost){ gs=payload; applyState(); } });
-  // host -> todos: asignación de roles (cada uno lee lo suyo)
-  channel.on("broadcast",{event:"assign"},({payload})=>{ const a=payload[me.id]; if(a){ myRole=a.role; myTasks=a.tasks.map(t=>({...t,done:false})); showReveal(); } });
-  // host pidió reinicio
-  channel.on("broadcast",{event:"reset"},()=>{ if(!isHost){ backToLobbyRemote(); } });
-
-  await channel.subscribe(async (status)=>{
-    if(status==="SUBSCRIBED"){
-      await channel.track({ id:me.id, name:me.name, color:me.color, host:isHost });
-      if(!isHost) send("hello",{}); // despierta al host para reenviar estado
-    }
-  });
+  channel=sb.channel(roomId(),{config:{presence:{key:me.id},broadcast:{self:false}}});
+  channel.on("presence",{event:"sync"},()=>{ if(gs&&gs.phase==="lobby"){ isHost?renderLobby():renderLobbyRemote(); } });
+  channel.on("broadcast",{event:"action"},({payload})=>{ if(isHost)handleAction(payload.id,payload.type,payload.data); });
+  channel.on("broadcast",{event:"state"},({payload})=>{ if(!isHost){gs=payload;applyState();} });
+  channel.on("broadcast",{event:"assign"},({payload})=>{ const a=payload[me.id]; if(a){myRole=a.role;myTasks=a.tasks.map(t=>({...t,done:false}));showReveal();} });
+  channel.on("broadcast",{event:"pos"},({payload})=>{ if(payload.id===me.id)return; const o=others[payload.id]||(others[payload.id]={x:payload.x,y:payload.y}); o.tx=payload.x;o.ty=payload.y;o.name=payload.name;o.color=payload.color;o.moving=payload.m; o.ghost=payload.g; });
+  channel.on("broadcast",{event:"toast"},({payload})=>{ if(!isHost){toast(payload.msg,4000);beep(520,.1);} });
+  channel.on("broadcast",{event:"reset"},()=>{ if(!isHost)backToLobbyRemote(); });
+  await channel.subscribe(async st=>{ if(st==="SUBSCRIBED"){ await channel.track({id:me.id,name:me.name,color:me.color,host:isHost}); if(!isHost)send("hello",{}); } });
 }
+function presenceList(){const s=channel.presenceState();const a=[];Object.values(s).forEach(v=>{if(v&&v[0])a.push(v[0]);});a.sort((x,y)=>(y.host?1:0)-(x.host?1:0)||x.name.localeCompare(y.name));return a;}
 
-function presenceList(){
-  const st = channel.presenceState();
-  const arr=[];
-  Object.values(st).forEach(v=>{ if(v&&v[0]) arr.push(v[0]); });
-  // ordenar: host primero, luego por nombre
-  arr.sort((a,b)=> (b.host?1:0)-(a.host?1:0) || a.name.localeCompare(b.name));
-  return arr;
-}
+/* ---- lobby ---- */
+function renderLobby(){$("lobbyCode").textContent=roomCode;const ps=presenceList();$("lobbyCount").textContent=`(${ps.length})`;const g=$("lobbyPlayers");g.innerHTML="";ps.forEach(p=>g.appendChild(chip(p,p.host)));$("hostControls").style.display="block";$("waitHost").style.display="none";renderImp(ps.length);$("btnStart").disabled=ps.length<3;$("btnStart").textContent=ps.length<3?`Faltan ${3-ps.length} jugador(es)`:"🚀 Comenzar partida";}
+function renderLobbyRemote(){$("lobbyCode").textContent=roomCode;const ps=presenceList();$("lobbyCount").textContent=`(${ps.length})`;const g=$("lobbyPlayers");g.innerHTML="";ps.forEach(p=>g.appendChild(chip(p,p.host)));}
+function chip(p,host){const d=document.createElement("div");d.className="pl";d.innerHTML=beanSVG(COLORS[p.color]||"#888")+`<div class="nm">${esc(p.name)}</div>`+(host?`<span class="tag host">anfitrión</span>`:"");return d;}
+function renderImp(n){const max=n>=7?3:(n>=5?2:1);if(impostorCount>max)impostorCount=max;const b=$("impPick");b.innerHTML="";for(let i=1;i<=max;i++){const x=document.createElement("button");x.className="btn ghost";x.style.marginTop="0";x.textContent=i;if(i===impostorCount)x.style.outline="3px solid var(--amar)";x.onclick=()=>{impostorCount=i;renderImp(n);};b.appendChild(x);}}
+$("btnShare").onclick=async()=>{const t=`Entra a jugar Impostor 👾\nCódigo: ${roomCode}`;try{if(navigator.share){await navigator.share({text:t});return;}}catch(e){}try{await navigator.clipboard.writeText(roomCode);toast("Código copiado: "+roomCode);}catch(e){toast("Código: "+roomCode);}};
+$("btnLeaveLobby").onclick=leaveAll;$("btnEndLeave").onclick=leaveAll;
+async function leaveAll(){try{await channel?.unsubscribe();}catch(e){}location.reload();}
 
-/* ---------- LOBBY ---------- */
-function renderLobby(){ // host
-  $("lobbyCode").textContent = roomCode;
-  const ps = presenceList();
-  $("lobbyCount").textContent = `(${ps.length})`;
-  const g=$("lobbyPlayers"); g.innerHTML="";
-  ps.forEach(p=> g.appendChild(playerChip(p, p.host)));
-  $("hostControls").style.display="block";
-  $("waitHost").style.display="none";
-  renderImpPick(ps.length);
-  $("btnStart").disabled = ps.length < 3;
-  $("btnStart").textContent = ps.length<3 ? `Faltan ${3-ps.length} jugador(es)` : "🚀 Comenzar partida";
-}
-function renderLobbyRemote(){ // jugador no-host, en lobby
-  $("lobbyCode").textContent = roomCode;
-  const ps = presenceList();
-  $("lobbyCount").textContent = `(${ps.length})`;
-  const g=$("lobbyPlayers"); g.innerHTML="";
-  ps.forEach(p=> g.appendChild(playerChip(p, p.host)));
-}
-function playerChip(p, host){
-  const d=document.createElement("div"); d.className="pl";
-  d.innerHTML = beanSVG(COLORS[p.color]||"#888") +
-    `<div class="nm">${esc(p.name)}</div>` + (host?`<span class="tag host">anfitrión</span>`:"");
-  return d;
-}
-function renderImpPick(n){
-  const max = n>=7?3:(n>=5?2:1);
-  if(impostorCount>max) impostorCount=max;
-  const box=$("impPick"); box.innerHTML="";
-  for(let i=1;i<=max;i++){
-    const b=document.createElement("button");
-    b.className="btn ghost"; b.style.marginTop="0";
-    b.textContent=i; if(i===impostorCount){ b.style.outline="3px solid var(--amar)"; }
-    b.onclick=()=>{ impostorCount=i; renderImpPick(n); };
-    box.appendChild(b);
-  }
-}
-$("btnShare").onclick=async()=>{
-  const txt = `Entra a jugar Impostor 👾\nCódigo: ${roomCode}`;
-  try{ if(navigator.share){ await navigator.share({text:txt}); return; } }catch(e){}
-  try{ await navigator.clipboard.writeText(roomCode); toast("Código copiado: "+roomCode);}catch(e){ toast("Código: "+roomCode); }
-};
-$("btnLeaveLobby").onclick=leaveAll;
-$("btnEndLeave").onclick=leaveAll;
-async function leaveAll(){ try{ await channel?.unsubscribe(); }catch(e){} location.reload(); }
-
-/* ---------- COMENZAR ---------- */
-$("btnStart").onclick=()=>{
-  const ps = presenceList();
-  if(ps.length<3){ toast("Mínimo 3 jugadores"); return; }
-  startGame(ps);
-};
-
-function freshGame(){
-  return { phase:"lobby", players:{}, order:[], progress:{done:0,total:0}, meeting:null,
-           killCooldownEndsAt:0, winner:null, lastEjected:null, impostorIds:null };
-}
-
+/* ---- comenzar ---- */
+function freshGame(){return{phase:"lobby",players:{},order:[],progress:{done:0,total:0},meeting:null,bodies:[],killCooldownEndsAt:0,winner:null,lastEjected:null,impostorIds:null};}
+$("btnStart").onclick=()=>{const ps=presenceList();if(ps.length<3){toast("Mínimo 3");return;}startGame(ps);};
 function startGame(ps){
-  // construir jugadores
-  gs = freshGame();
-  gs.phase="tasks";
-  const ids = ps.map(p=>p.id);
-  shuffle(ids);
-  const impIds = ids.slice(0, impostorCount);
-  const assignments = {};
-  let total=0;
+  gs=freshGame();gs.phase="play";
+  const ids=ps.map(p=>p.id);shuffle(ids);const impIds=ids.slice(0,impostorCount);
+  const assign={};let total=0;const pts=shuffle(TASKPOINTS.map(t=>t.id));
   ps.forEach(p=>{
-    const imp = impIds.includes(p.id);
-    gs.players[p.id] = { id:p.id, name:p.name, color:p.color, alive:true, emergencyUsed:false, tasksLeft: imp?0:4, host:p.host||false };
-    const tasks=[]; const nT=4;
-    for(let i=0;i<nT;i++) tasks.push({ id:rid(), type: TASKTYPES[Math.floor(Math.random()*TASKTYPES.length)] });
-    assignments[p.id] = { role: imp?"impostor":"crew", tasks };
-    if(!imp) total+=nT;
+    const imp=impIds.includes(p.id);
+    gs.players[p.id]={id:p.id,name:p.name,color:p.color,alive:true,emergencyUsed:false,tasksLeft:imp?0:4,host:p.host||false};
+    const tp=shuffle(TASKPOINTS.slice()).slice(0,4);
+    const tasks=tp.map(t=>({id:t.id,type:t.type}));
+    assign[p.id]={role:imp?"impostor":"crew",tasks};
+    if(!imp)total+=4;
   });
-  gs.order = ps.map(p=>p.id);
-  gs.impostorIds = impIds;
-  gs.progress = { done:0, total };
-  gs.killCooldownEndsAt = Date.now()+12000; // 12s de gracia inicial
-
-  // host se auto-asigna
-  const mine = assignments[me.id];
-  myRole = mine.role; myTasks = mine.tasks.map(t=>({...t,done:false}));
-
-  // enviar roles (cada quien lee lo suyo) y estado público
-  channel.send({ type:"broadcast", event:"assign", payload: assignments });
-  broadcastState();
-  showReveal();
-  beep(880,.15);
+  gs.order=ps.map(p=>p.id);gs.impostorIds=impIds;gs.progress={done:0,total};gs.killCooldownEndsAt=Date.now()+12000;
+  const mine=assign[me.id];myRole=mine.role;myTasks=mine.tasks.map(t=>({...t,done:false}));
+  channel.send({type:"broadcast",event:"assign",payload:assign});
+  broadcastState();showReveal();beep(880,.15);
 }
 
-/* ---------- ENVÍO DE ACCIONES ---------- */
-function send(type,data){
-  if(isHost){ handleAction(me.id,type,data); }
-  else channel.send({ type:"broadcast", event:"action", payload:{ id:me.id, type, data } });
-}
-function broadcastState(){
-  const pub = JSON.parse(JSON.stringify(gs));
-  if(pub.phase!=="end") pub.impostorIds = null; // ocultar hasta el final
-  channel.send({ type:"broadcast", event:"state", payload: pub });
-  applyState(); // el host también se renderiza
-}
+/* ---- enviar/estado ---- */
+function send(type,data){ if(isHost)handleAction(me.id,type,data); else channel.send({type:"broadcast",event:"action",payload:{id:me.id,type,data}}); }
+function broadcastState(){const pub=JSON.parse(JSON.stringify(gs));if(pub.phase!=="end")pub.impostorIds=null;channel.send({type:"broadcast",event:"state",payload:pub});applyState();}
 
-/* ---------- LÓGICA DEL HOST ---------- */
+/* ---- lógica host ---- */
 function handleAction(pid,type,data){
-  if(!isHost||!gs) return;
-  const P = gs.players[pid];
+  if(!isHost||!gs)return;const P=gs.players[pid];
   switch(type){
     case "hello":
-      // un jugador (re)apareció; si ya empezó, reenvía su rol
-      if(gs.phase!=="lobby" && gs.impostorIds){
-        const imp = gs.impostorIds.includes(pid);
-        // no reconstruimos tareas si ya existían; mandamos su rol básico
-        channel.send({ type:"broadcast", event:"assign", payload:{ [pid]: { role: imp?"impostor":"crew", tasks: myTasksFor(pid) } } });
-      }
-      broadcastState();
-      break;
+      if(gs.phase!=="lobby"&&gs.impostorIds){const imp=gs.impostorIds.includes(pid);channel.send({type:"broadcast",event:"assign",payload:{[pid]:{role:imp?"impostor":"crew",tasks:defTasks()}}});}
+      broadcastState();break;
     case "task":
-      if(!P || gs.phase!=="tasks") return;
-      if(gs.impostorIds.includes(pid)) return;      // impostor no suma
-      if(P.tasksLeft<=0) return;
-      P.tasksLeft--; gs.progress.done = Math.min(gs.progress.total, gs.progress.done+1);
-      if(gs.progress.done>=gs.progress.total){ endGame("crew","¡Tripulantes completaron todas las tareas!"); return; }
-      broadcastState();
-      break;
+      if(!P||gs.phase!=="play"||gs.impostorIds.includes(pid)||P.tasksLeft<=0)return;
+      P.tasksLeft--;gs.progress.done=Math.min(gs.progress.total,gs.progress.done+1);
+      if(gs.progress.done>=gs.progress.total){endGame("crew","¡Tripulantes completaron todas las tareas!");return;}
+      broadcastState();break;
     case "kill":{
-      if(gs.phase!=="tasks") return;
-      if(!gs.impostorIds.includes(pid)) return;
-      if(!P||!P.alive) return;
-      if(Date.now()<gs.killCooldownEndsAt) return;
-      const V = gs.players[data.target];
-      if(!V||!V.alive||gs.impostorIds.includes(V.id)) return;
-      V.alive=false;
-      gs.killCooldownEndsAt = Date.now()+30000;
-      if(checkWin()) return;
-      // reunión automática tras breve retraso ("encuentran el cuerpo")
-      broadcastState();
-      setTimeout(()=>{ if(gs&&gs.phase==="tasks") openMeeting("Se encontró un cuerpo", null); }, 6000);
-      break;
+      if(gs.phase!=="play"||!gs.impostorIds.includes(pid)||!P||!P.alive||Date.now()<gs.killCooldownEndsAt)return;
+      const V=gs.players[data.target];if(!V||!V.alive||gs.impostorIds.includes(V.id))return;
+      V.alive=false;gs.killCooldownEndsAt=Date.now()+28000;
+      gs.bodies.push({id:V.id,x:data.x,y:data.y,color:V.color});
+      if(checkWin())return;broadcastState();break;
     }
+    case "report":
+      if(gs.phase!=="play"||!P||!P.alive||!gs.bodies.length)return;
+      openMeeting("📢 Se reportó un cuerpo",pid);break;
     case "emergency":
-      if(gs.phase!=="tasks"||!P||!P.alive||P.emergencyUsed) return;
-      P.emergencyUsed=true;
-      openMeeting(`${P.name} pidió reunión de emergencia`, pid);
-      break;
+      if(gs.phase!=="play"||!P||!P.alive||P.emergencyUsed)return;
+      P.emergencyUsed=true;openMeeting(`${P.name} llamó a reunión`,pid);break;
     case "vote":
-      if(gs.phase!=="meeting"||!P||!P.alive) return;
-      if(gs.meeting.votes[pid]) return; // ya votó
-      gs.meeting.votes[pid]=data.target; // id o 'skip'
-      broadcastState();
-      // ¿todos los vivos votaron?
-      const aliveIds = Object.values(gs.players).filter(x=>x.alive).map(x=>x.id);
-      if(aliveIds.every(id=>gs.meeting.votes[id])) resolveMeeting();
-      break;
-    case "again":
-      if(gs.phase==="end") resetToLobby();
-      break;
+      if(gs.phase!=="meeting"||!P||!P.alive||gs.meeting.votes[pid])return;
+      gs.meeting.votes[pid]=data.target;broadcastState();
+      if(Object.values(gs.players).filter(x=>x.alive).every(x=>gs.meeting.votes[x.id]))resolveMeeting();break;
+    case "again": if(gs.phase==="end")resetToLobby();break;
   }
 }
-function myTasksFor(){ return [{id:rid(),type:"hold"},{id:rid(),type:"seq"},{id:rid(),type:"wires"},{id:rid(),type:"pad"}]; }
-
-function openMeeting(reason, by){
-  gs.phase="meeting";
-  gs.meeting = { reason, by, votes:{}, endsAt: Date.now()+45000 };
-  broadcastState();
-  // temporizador del host para resolver
-  clearTimeout(gs._meetTO);
-  gs._meetTO = setTimeout(()=>resolveMeeting(), 45200);
-}
+function defTasks(){return[{id:"t1",type:"wires"},{id:"t3",type:"pad"},{id:"t5",type:"hold"},{id:"t4",type:"seq"}];}
+function openMeeting(reason,by){gs.phase="meeting";gs.meeting={reason,by,votes:{},endsAt:Date.now()+45000};gs.bodies=[];broadcastState();clearTimeout(gs._mt);gs._mt=setTimeout(resolveMeeting,45200);}
 function resolveMeeting(){
-  if(!gs||gs.phase!=="meeting") return;
-  const tally={};
-  Object.values(gs.meeting.votes).forEach(t=>{ tally[t]=(tally[t]||0)+1; });
-  // encontrar máximo entre jugadores (excluye skip del ganador si empata)
-  let top=null, topN=-1, tie=false;
-  Object.entries(tally).forEach(([t,n])=>{
-    if(t==="skip") return;
-    if(n>topN){ top=t; topN=n; tie=false; } else if(n===topN){ tie=true; }
-  });
-  const skipN = tally["skip"]||0;
-  let ejected=null;
-  if(top && !tie && topN>skipN){ ejected=gs.players[top]; }
-  if(ejected){ ejected.alive=false; gs.lastEjected={ name:ejected.name, color:ejected.color, wasImpostor: gs.impostorIds.includes(ejected.id) }; }
-  else gs.lastEjected={ name:null };
-  gs.meeting=null;
-  if(checkWin()) return;
-  gs.phase="tasks";
-  gs.killCooldownEndsAt = Date.now()+22000;
-  broadcastState();
-  const m = gs.lastEjected;
-  setTimeout(()=>{ // anunciar por estado un instante después
-    if(m.name) toastAll(`${m.name} fue expulsado — ${m.wasImpostor?"¡ERA impostor! 🔪":"no era impostor 😳"}`);
-    else toastAll("Nadie fue expulsado");
-  },100);
+  if(!gs||gs.phase!=="meeting")return;const tally={};Object.values(gs.meeting.votes).forEach(t=>tally[t]=(tally[t]||0)+1);
+  let top=null,tn=-1,tie=false;Object.entries(tally).forEach(([t,n])=>{if(t==="skip")return;if(n>tn){top=t;tn=n;tie=false;}else if(n===tn)tie=true;});
+  const skip=tally.skip||0;let ej=null;if(top&&!tie&&tn>skip)ej=gs.players[top];
+  if(ej){ej.alive=false;gs.lastEjected={name:ej.name,wasImpostor:gs.impostorIds.includes(ej.id)};}else gs.lastEjected={name:null};
+  gs.meeting=null;if(checkWin())return;gs.phase="play";gs.killCooldownEndsAt=Date.now()+20000;broadcastState();
+  const m=gs.lastEjected;setTimeout(()=>{ if(m.name)toastAll(`${m.name} fue expulsado — ${m.wasImpostor?"¡ERA impostor! 🔪":"no era impostor 😳"}`);else toastAll("Nadie fue expulsado"); },120);
 }
-function toastAll(msg){ channel.send({type:"broadcast",event:"toast",payload:{msg}}); toast(msg,4000); }
-// escuchar toasts globales
-sbToastHook();
-function sbToastHook(){ /* placeholder: se registra tras connect via applyState */ }
+function toastAll(msg){channel.send({type:"broadcast",event:"toast",payload:{msg}});toast(msg,4000);}
+function checkWin(){const al=Object.values(gs.players).filter(p=>p.alive);const ia=al.filter(p=>gs.impostorIds.includes(p.id)).length;const ca=al.length-ia;if(ia===0){endGame("crew","Expulsaron a todos los impostores.");return true;}if(ia>=ca){endGame("impostor","Los impostores igualaron a la tripulación.");return true;}return false;}
+function endGame(w,r){gs.phase="end";gs.winner={who:w,reason:r};gs.meeting=null;broadcastState();}
+function resetToLobby(){channel.send({type:"broadcast",event:"reset",payload:{}});backToLobbyHost();}
+function backToLobbyHost(){gs=freshGame();myRole=null;myTasks=[];revealShown=false;others={};show("s-lobby");renderLobby();}
+function backToLobbyRemote(){gs=freshGame();myRole=null;myTasks=[];revealShown=false;others={};$("hostControls").style.display="none";$("waitHost").style.display="block";show("s-lobby");renderLobbyRemote();}
 
-function checkWin(){
-  const alive = Object.values(gs.players).filter(p=>p.alive);
-  const impAlive = alive.filter(p=>gs.impostorIds.includes(p.id)).length;
-  const crewAlive = alive.length - impAlive;
-  if(impAlive===0){ endGame("crew","Los tripulantes expulsaron a todos los impostores."); return true; }
-  if(impAlive>=crewAlive){ endGame("impostor","Los impostores igualaron a la tripulación."); return true; }
-  return false;
-}
-function endGame(winner, reason){
-  gs.phase="end"; gs.winner={who:winner,reason}; gs.meeting=null;
-  broadcastState();
-}
-function resetToLobby(){
-  channel.send({type:"broadcast",event:"reset",payload:{}});
-  backToLobbyHost();
-}
-function backToLobbyHost(){
-  gs=freshGame(); myRole=null; myTasks=[]; revealShown=false;
-  show("s-lobby"); renderLobby();
-}
-function backToLobbyRemote(){
-  gs=freshGame(); myRole=null; myTasks=[]; revealShown=false;
-  $("hostControls").style.display="none"; $("waitHost").style.display="block";
-  show("s-lobby"); renderLobbyRemote();
-}
-
-/* ---------- APLICAR ESTADO (todos) ---------- */
+/* ---- aplicar estado ---- */
 function applyState(){
-  if(!gs) return;
-  // toasts globales (registrar una sola vez)
-  if(!applyState._hooked){ applyState._hooked=true;
-    channel.on("broadcast",{event:"toast"},({payload})=>{ if(!isHost){ toast(payload.msg,4000); beep(520,.1);} });
-  }
-  if(gs.phase==="lobby"){ if(!isHost) renderLobbyRemote(); return; }
-  if(gs.phase==="tasks"){ show("s-game"); renderGame(); }
-  else if(gs.phase==="meeting"){ show("s-meeting"); renderMeeting(); }
-  else if(gs.phase==="end"){ show("s-end"); renderEnd(); }
+  if(!gs)return;
+  if(gs.phase==="lobby"){if(!isHost)renderLobbyRemote();return;}
+  if(gs.phase==="play"){ show("s-play"); startLoop(); }
+  else if(gs.phase==="meeting"){ stopLoop(); myPos={x:SPAWN.x+(Math.random()*40-20),y:SPAWN.y}; show("s-meeting"); renderMeeting(); }
+  else if(gs.phase==="end"){ stopLoop(); show("s-end"); renderEnd(); }
 }
 
-/* ---------- REVELACIÓN DE ROL ---------- */
-function showReveal(){
-  revealShown=true;
-  const rv=$("roleReveal");
-  rv.className="reveal on "+(myRole==="impostor"?"imp":"crew");
-  $("revealBean").innerHTML=beanSVG(COLORS[me.color],90);
+/* ---- revelación ---- */
+function showReveal(){revealShown=true;const rv=$("roleReveal");rv.className="reveal on "+(myRole==="impostor"?"imp":"crew");$("revealBean").innerHTML=beanSVG(COLORS[me.color],90);if(myRole==="impostor"){$("revealRole").textContent="IMPOSTOR";$("revealDesc").textContent="Acércate a un tripulante y elimínalo sin que te pillen. Finge que haces tareas.";beep(180,.3,"sawtooth");vibrate([80,40,80]);}else{$("revealRole").textContent="TRIPULANTE";$("revealDesc").textContent="Camina por la nave, completa tus tareas y descubre al impostor.";beep(740,.2);vibrate(40);}}
+$("btnRevealOk").onclick=()=>{$("roleReveal").className="reveal";applyState();};
+
+/* ======================= JUEGO: NAVE ======================= */
+const cv=$("game"),cx=cv.getContext("2d");
+let VIEW=1;
+function fit(){cv.width=innerWidth*devicePixelRatio;cv.height=innerHeight*devicePixelRatio;cv.style.width=innerWidth+"px";cv.style.height=innerHeight+"px";cx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);VIEW=Math.max(0.62,Math.min(1,innerWidth/640));}
+addEventListener("resize",fit);fit();
+
+/* ---- input: joystick dinámico ---- */
+let joy={active:false,id:null,ox:0,oy:0,dx:0,dy:0};
+function toLocal(e){const r=cv.getBoundingClientRect();return{x:e.clientX-r.left,y:e.clientY-r.top};}
+cv.addEventListener("pointerdown",e=>{ if(joy.active)return; const p=toLocal(e); joy.active=true;joy.id=e.pointerId;joy.ox=p.x;joy.oy=p.y;joy.dx=0;joy.dy=0; },{passive:true});
+cv.addEventListener("pointermove",e=>{ if(!joy.active||e.pointerId!==joy.id)return; const p=toLocal(e); let dx=p.x-joy.ox,dy=p.y-joy.oy;const mag=Math.hypot(dx,dy);const max=60;if(mag>max){dx=dx/mag*max;dy=dy/mag*max;}joy.dx=dx/max;joy.dy=dy/max; },{passive:true});
+function joyEnd(e){ if(e.pointerId===joy.id){joy.active=false;joy.dx=0;joy.dy=0;} }
+cv.addEventListener("pointerup",joyEnd);cv.addEventListener("pointercancel",joyEnd);
+/* teclado (para PC) */
+const keys={};
+addEventListener("keydown",e=>keys[e.key.toLowerCase()]=true);
+addEventListener("keyup",e=>keys[e.key.toLowerCase()]=false);
+
+function walkable(x,y){ for(const r of ROOMS){ if(x>r.x+12&&x<r.x+r.w-12&&y>r.y+12&&y<r.y+r.h-12)return true; } return false; }
+
+function roomNameAt(x,y){ for(const r of ROOMS){ if(r.n&&x>r.x&&x<r.x+r.w&&y>r.y&&y<r.y+r.h)return r.n; } return ""; }
+
+function startLoop(){ if(raf)return; lastT=performance.now(); raf=requestAnimationFrame(loop); }
+function stopLoop(){ if(raf){cancelAnimationFrame(raf);raf=null;} }
+let lastT=0;
+function loop(t){
+  const dt=Math.min(40,t-lastT);lastT=t;
+  update(dt);render();
+  raf=requestAnimationFrame(loop);
+}
+
+function myAlive(){const p=gs&&gs.players[me.id];return p?p.alive:true;}
+
+function update(dt){
+  if(!gs||gs.phase!=="play")return;
+  // mover (si no hay modal abierto)
+  let vx=0,vy=0;
+  if(!modalOpen){
+    vx=joy.dx;vy=joy.dy;
+    if(keys["arrowup"]||keys["w"])vy-=1;if(keys["arrowdown"]||keys["s"])vy+=1;
+    if(keys["arrowleft"]||keys["a"])vx-=1;if(keys["arrowright"]||keys["d"])vx+=1;
+  }
+  const mag=Math.hypot(vx,vy);moving=mag>0.08;
+  if(moving){
+    const s=SPEED*(dt/16.7)*Math.min(1,mag);const nx=myPos.x+vx/Math.max(mag,1)*s*mag/Math.max(mag,1);
+    // mover por ejes para deslizar en paredes
+    const stepx=myPos.x+(vx/mag)*s, stepy=myPos.y+(vy/mag)*s;
+    if(walkable(stepx,myPos.y))myPos.x=stepx;
+    if(walkable(myPos.x,stepy))myPos.y=stepy;
+    myPos.x=Math.max(20,Math.min(WORLD.w-20,myPos.x));myPos.y=Math.max(20,Math.min(WORLD.h-20,myPos.y));
+  }
+  // enviar posición (throttle)
+  const now=performance.now();
+  if(now-lastPosSent>80){lastPosSent=now;channel.send({type:"broadcast",event:"pos",payload:{id:me.id,x:Math.round(myPos.x),y:Math.round(myPos.y),name:me.name,color:me.color,m:moving,g:!myAlive()}});}
+  // interpolar otros
+  for(const id in others){const o=others[id];if(o.tx!=null){o.x+=(o.tx-o.x)*0.25;o.y+=(o.ty-o.y)*0.25;}}
+  // calcular cercanías + HUD
+  computeNear();updateHUD();
+}
+
+function computeNear(){
+  near={task:null,body:null,emg:false,killTarget:null};
+  if(!myAlive()){ // fantasma: solo puede hacer tareas
+    if(myRole==="crew"){ near.task=taskUnderMe(); }
+    return;
+  }
+  // tarea
+  if(myRole==="crew")near.task=taskUnderMe();
+  // emergencia
+  if(dist(myPos,EMG)<EMGDIST)near.emg=true;
+  // cuerpo cercano
+  if(gs.bodies){for(const b of gs.bodies){if(dist(myPos,b)<REPORTDIST){near.body=b;break;}}}
+  // objetivo de kill (impostor)
   if(myRole==="impostor"){
-    $("revealRole").textContent="IMPOSTOR";
-    $("revealDesc").innerHTML="Elimina a la tripulación sin que te pillen. Finge que haces tareas y miente en las reuniones.";
-    beep(180,.3,"sawtooth"); vibrate([80,40,80]);
-  }else{
-    $("revealRole").textContent="TRIPULANTE";
-    $("revealDesc").innerHTML="Completa tus tareas y descubre quién es el impostor antes de que sea tarde.";
-    beep(740,.2); vibrate(40);
+    let best=null,bd=KILLDIST;
+    for(const id in gs.players){const P=gs.players[id];if(id===me.id||!P.alive||gs.impostorIds&&gs.impostorIds.includes(id))continue;
+      const op=(others[id])||(id===me.id?myPos:null);if(!op)continue;const d=dist(myPos,op);if(d<bd){bd=d;best=id;}}
+    // si no tenemos impostorIds (no-host) usamos todos los vivos distintos de mí
+    if(!gs.impostorIds){ best=null;bd=KILLDIST; for(const id in gs.players){const P=gs.players[id];if(id===me.id||!P.alive)continue;const op=others[id];if(!op)continue;const d=dist(myPos,op);if(d<bd){bd=d;best=id;}} }
+    near.killTarget=best;
   }
 }
-$("btnRevealOk").onclick=()=>{ $("roleReveal").className="reveal"; applyState(); };
+function taskUnderMe(){ for(const mt of myTasks){ if(mt.done)continue; const tp=TASKPOINTS.find(t=>t.id===mt.id); if(tp&&dist(myPos,tp)<USEDIST)return mt; } return null; }
 
-/* ---------- PANTALLA DE JUEGO ---------- */
-function renderGame(){
-  const meP = gs.players[me.id];
-  const alive = meP?meP.alive:true;
-  const aliveCount = Object.values(gs.players).filter(p=>p.alive).length;
-  $("roleBadge").innerHTML = myRole==="impostor" ? "🔪 Impostor" : "🛠️ Tripulante";
-  $("roleBadge").style.color = myRole==="impostor"?"#ff8b97":"#8affc0";
-  $("aliveBadge").textContent = `👥 ${aliveCount} vivos`;
-
-  // panel tareas (todos ven la barra; crew e impostor ven lista)
-  $("progBar").style.width = pct()+"%";
-  $("progTxt").textContent = pct()+"% de tareas";
-  renderTasks(alive);
-
-  $("ghostNote").style.display = alive ? "none":"block";
-  $("btnEmergency").style.display = (alive && myRole!=null) ? "block":"none";
-  $("btnEmergency").disabled = !!(meP && meP.emergencyUsed);
-  if(meP && meP.emergencyUsed) $("btnEmergency").textContent="🔔 Ya usaste tu emergencia";
-  else $("btnEmergency").textContent="🔔 Reunión de emergencia";
-
-  // botón eliminar (solo impostor vivo)
-  const kb=$("btnKill");
-  if(myRole==="impostor" && alive){
-    kb.style.display="block";
-    tickKill();
-  } else kb.style.display="none";
+function updateHUD(){
+  const al=myAlive();
+  $("roleBadge").innerHTML=myRole==="impostor"?"🔪 Impostor":"🛠️ Tripulante";
+  $("roleBadge").style.color=myRole==="impostor"?"#ff8b97":"#8affc0";
+  const alive=Object.values(gs.players).filter(p=>p.alive).length;$("aliveBadge").textContent=`👥 ${alive}`;
+  $("progBar").style.width=pct()+"%";
+  $("ghostTag").style.display=al?"none":"block";
+  // botones
+  $("aUse").style.display=near.task?"flex":"none";
+  $("aEmg").style.display=(al&&near.emg)?"flex":"none";
+  $("aEmg").disabled=!!(gs.players[me.id]&&gs.players[me.id].emergencyUsed);
+  $("aReport").style.display=(al&&near.body)?"flex":"none";
+  if(myRole==="impostor"&&al){const kb=$("aKill");kb.style.display="flex";const cd=Math.max(0,Math.ceil((gs.killCooldownEndsAt-Date.now())/1000));kb.disabled=!(near.killTarget&&cd<=0);kb.querySelector(".ic").textContent=cd>0?cd:"🔪";}
+  else $("aKill").style.display="none";
 }
-function tickKill(){
-  clearInterval(killTick);
-  const upd=()=>{
-    const left=Math.max(0,Math.ceil((gs.killCooldownEndsAt-Date.now())/1000));
-    const kb=$("btnKill");
-    if(left>0){ kb.disabled=true; kb.textContent=`🔪 Eliminar (${left}s)`; }
-    else{ kb.disabled=false; kb.textContent="🔪 Eliminar"; }
-  };
-  upd(); killTick=setInterval(()=>{ if(!gs||gs.phase!=="tasks"){clearInterval(killTick);return;} upd(); },300);
-}
-function pct(){ return gs.progress.total? Math.round(gs.progress.done/gs.progress.total*100):0; }
+function pct(){return gs.progress.total?Math.round(gs.progress.done/gs.progress.total*100):0;}
 
-function renderTasks(alive){
-  const list=$("taskList"); list.innerHTML="";
-  if(myRole==null){ list.innerHTML='<p class="muted">Observando…</p>'; return; }
-  myTasks.forEach(t=>{
-    const d=document.createElement("div"); d.className="task"+(t.done?" done":"");
-    d.innerHTML=`<div class="ic">${t.done?"✓":""}</div><div>${TASKLABEL[t.type]}</div>`;
-    if(!t.done) d.onclick=()=>openTask(t);
-    list.appendChild(d);
-  });
-  if(myRole==="impostor"){
-    const n=document.createElement("p"); n.className="hint"; n.textContent="(Son falsas — hazlas para disimular 😏)";
-    list.appendChild(n);
+/* acciones */
+$("aUse").onclick=()=>{ if(near.task)openTask(near.task); };
+$("aEmg").onclick=()=>{ send("emergency",{}); };
+$("aReport").onclick=()=>{ send("report",{}); beep(300,.2); };
+$("aKill").onclick=()=>{ if(near.killTarget){const op=others[near.killTarget]||myPos; send("kill",{target:near.killTarget,x:Math.round(op.x),y:Math.round(op.y)}); vibrate(120);beep(140,.25,"sawtooth"); } };
+
+/* ---- render nave ---- */
+function render(){
+  const W=innerWidth,H=innerHeight;cx.clearRect(0,0,W,H);
+  cx.fillStyle="#05080f";cx.fillRect(0,0,W,H);
+  const camx=myPos.x,camy=myPos.y;
+  cx.save();cx.translate(W/2,H/2);cx.scale(VIEW,VIEW);cx.translate(-camx,-camy);
+  // piso
+  for(const r of ROOMS){
+    cx.fillStyle="#17224a";roundRect(r.x,r.y,r.w,r.h,18);cx.fill();
+    cx.strokeStyle="#2b3a6e";cx.lineWidth=4;roundRect(r.x,r.y,r.w,r.h,18);cx.stroke();
   }
-}
-
-$("btnEmergency").onclick=()=>{ if(confirm("¿Llamar a reunión de emergencia? Solo puedes una vez.")) send("emergency",{}); };
-$("btnKill").onclick=openKill;
-
-/* ---------- ELIMINAR ---------- */
-function openKill(){
-  const list=$("killList"); list.innerHTML="";
-  Object.values(gs.players).forEach(p=>{
-    if(!p.alive||p.id===me.id) return;
-    if(gs.impostorIds && gs.impostorIds.includes(p.id)) return; // no mostrar compañeros (host sabe; otros impostores: gs.impostorIds es null para ellos)
-    const d=document.createElement("div"); d.className="voterow";
-    d.innerHTML=beanSVG(COLORS[p.color],40)+`<div class="nm">${esc(p.name)}</div>`;
-    d.onclick=()=>{ send("kill",{target:p.id}); closeModal("killModal"); vibrate(120); beep(140,.25,"sawtooth"); };
-    list.appendChild(d);
-  });
-  // si gs.impostorIds es null (soy impostor no-host), mostramos a todos los vivos menos yo
-  if(!gs.impostorIds){
-    list.innerHTML="";
-    Object.values(gs.players).forEach(p=>{
-      if(!p.alive||p.id===me.id) return;
-      const d=document.createElement("div"); d.className="voterow";
-      d.innerHTML=beanSVG(COLORS[p.color],40)+`<div class="nm">${esc(p.name)}</div>`;
-      d.onclick=()=>{ send("kill",{target:p.id}); closeModal("killModal"); vibrate(120); beep(140,.25,"sawtooth"); };
-      list.appendChild(d);
-    });
+  // nombres de sala
+  cx.fillStyle="#5b6ea8";cx.font="bold 22px system-ui";cx.textAlign="center";
+  for(const r of ROOMS){if(r.n)cx.fillText(r.n,r.x+r.w/2,r.y+28);}
+  // botón emergencia
+  cx.beginPath();cx.arc(EMG.x,EMG.y,20,0,7);cx.fillStyle="#ff5a6a";cx.fill();cx.lineWidth=4;cx.strokeStyle="#fff6";cx.stroke();
+  cx.fillStyle="#fff";cx.font="18px system-ui";cx.fillText("🔔",EMG.x,EMG.y+6);
+  // tareas (mías, no hechas)
+  if(myRole==="crew"){for(const mt of myTasks){if(mt.done)continue;const tp=TASKPOINTS.find(t=>t.id===mt.id);if(!tp)continue;const near1=dist(myPos,tp)<USEDIST;cx.beginPath();cx.arc(tp.x,tp.y,16,0,7);cx.fillStyle=near1?"#ffd23f":"#2fd27a";cx.fill();cx.font="16px system-ui";cx.fillText("⬧",tp.x,tp.y+5);}}
+  // cuerpos
+  if(gs.bodies)for(const b of gs.bodies){ cx.save();cx.translate(b.x,b.y);cx.rotate(1.2); drawBean(0,0,COLORS[b.color]||"#888",false,true); cx.restore(); cx.fillStyle="#ff6b6b";cx.font="14px system-ui";cx.fillText("☠",b.x+14,b.y-10);}
+  // otros jugadores
+  const iAmGhost=!myAlive();
+  for(const id in others){const o=others[id];const P=gs.players[id];if(!P)continue;
+    if(!P.alive)continue; // muertos no se dibujan como vivos (su cuerpo sí)
+    if(o.ghost&&!iAmGhost)continue; // fantasmas solo visibles para fantasmas
+    drawBean(o.x,o.y,COLORS[o.color]||"#888",o.moving,false,o.ghost);
+    cx.fillStyle=o.ghost?"#ffffff88":"#fff";cx.font="bold 15px system-ui";cx.textAlign="center";cx.fillText(o.name||"",o.x,o.y-40);
   }
-  openModal("killModal");
+  // yo
+  drawBean(myPos.x,myPos.y,COLORS[me.color],moving,false,iAmGhost);
+  cx.restore();
+  // joystick
+  if(joy.active){const bx=joy.ox,by=joy.oy;cx.beginPath();cx.arc(bx,by,60,0,7);cx.fillStyle="#ffffff14";cx.fill();cx.beginPath();cx.arc(bx+joy.dx*55,by+joy.dy*55,26,0,7);cx.fillStyle="#ffffff40";cx.fill();}
 }
-$("btnKillCancel").onclick=()=>closeModal("killModal");
+function roundRect(x,y,w,h,r){cx.beginPath();cx.moveTo(x+r,y);cx.arcTo(x+w,y,x+w,y+h,r);cx.arcTo(x+w,y+h,x,y+h,r);cx.arcTo(x,y+h,x,y,r);cx.arcTo(x,y,x+w,y,r);cx.closePath();}
+function drawBean(x,y,color,mv,dead,ghost){
+  cx.save();cx.translate(x,y);if(ghost)cx.globalAlpha=0.5;
+  const bob=mv?Math.sin(performance.now()/90)*2:0;cx.translate(0,bob);
+  cx.scale(0.42,0.42);
+  cx.beginPath();cx.ellipse(0,52,26,6,0,0,7);cx.fillStyle="#0005";cx.fill();
+  cx.fillStyle=color;
+  path("M -24 -12 Q -24 -38 0 -38 Q 24 -38 24 -12 L 24 34 Q 24 52 6 52 L -6 52 Q -24 52 -24 34 Z");
+  path("M -28 -2 Q -36 -2 -36 12 L -36 28 Q -36 38 -26 36 L -24 -2 Z");
+  cx.fillStyle="#bfe7ff";cx.beginPath();cx.ellipse(10,-12,20,14,0,0,7);cx.fill();cx.lineWidth=3;cx.strokeStyle="#7fb4d6";cx.stroke();
+  cx.fillStyle="#fff8";cx.beginPath();cx.ellipse(4,-16,6,4,0,0,7);cx.fill();
+  cx.restore();
+}
+function path(d){const p=new Path2D(d);cx.fill(p);}
 
-/* ---------- REUNIÓN ---------- */
-function renderMeeting(){
-  const m=gs.meeting; if(!m) return;
-  $("meetReason").textContent=m.reason;
-  const meP=gs.players[me.id]; const iVote = meP&&meP.alive;
-  const myVote = m.votes[me.id];
-  $("voteNote").textContent = iVote ? (myVote?"Tu voto quedó registrado.":"Toca a quién quieres expulsar.") : "👻 Los fantasmas no votan.";
-  const list=$("voteList"); list.innerHTML="";
-  Object.values(gs.players).forEach(p=>{
-    const d=document.createElement("div"); d.className="voterow"+(myVote===p.id?" sel":"")+(p.alive?"":" dead");
-    const votes=Object.values(m.votes).filter(v=>v===p.id).length;
-    d.innerHTML=beanSVG(COLORS[p.color],40)+`<div class="nm">${esc(p.name)}${p.alive?"":" 💀"}</div><div class="vcount">${"🗳️".repeat(votes)}</div>`;
-    if(iVote && !myVote && p.alive) d.onclick=()=>{ send("vote",{target:p.id}); };
-    list.appendChild(d);
-  });
-  // skip
-  const s=document.createElement("div"); s.className="voterow"+(myVote==="skip"?" sel":"");
-  const sv=Object.values(m.votes).filter(v=>v==="skip").length;
-  s.innerHTML=`<div style="width:40px;text-align:center;font-size:1.4rem">⏭️</div><div class="nm">Saltar voto</div><div class="vcount">${"🗳️".repeat(sv)}</div>`;
-  if(iVote && !myVote) s.onclick=()=>{ send("vote",{target:"skip"}); };
-  list.appendChild(s);
-  tickMeeting();
-}
-function tickMeeting(){
-  clearInterval(meetTick);
-  const upd=()=>{ if(!gs||gs.phase!=="meeting"){clearInterval(meetTick);return;} const left=Math.max(0,Math.ceil((gs.meeting.endsAt-Date.now())/1000)); $("meetTimer").textContent=left; };
-  upd(); meetTick=setInterval(upd,300);
-}
+/* ======================= MINI-JUEGOS ======================= */
+$("taskModal").addEventListener("click",e=>{if(e.target.id==="taskModal")closeTask();});
+function openTask(mt){const tp=TASKPOINTS.find(t=>t.id===mt.id);const type=tp?tp.type:mt.type;$("taskTitle").textContent=TASKLABEL[type];const b=$("taskBody");b.innerHTML="";modalOpen=true;$("taskModal").classList.add("on");if(type==="hold")miniHold(b,mt);else if(type==="seq")miniSeq(b,mt);else if(type==="wires")miniWires(b,mt);else miniPad(b,mt);}
+function closeTask(){modalOpen=false;$("taskModal").classList.remove("on");}
+function doneTask(mt){mt.done=true;closeTask();beep(880,.12);vibrate(30);send("task",{});if(myTasks.every(t=>t.done))toast("¡Terminaste todas tus tareas! ✅");}
+function miniHold(b,mt){b.innerHTML=`<p class="muted center">Mantén presionado hasta llenarlo.</p><div class="hold" id="hc"><div class="fill" id="hf"></div><span id="ht">0%</span></div>`;const c=$("hc"),f=$("hf"),tx=$("ht");let p=0,iv=null;const st=()=>{clearInterval(iv);iv=setInterval(()=>{p=Math.min(100,p+4);f.style.height=p+"%";tx.textContent=p+"%";if(p>=100){clearInterval(iv);doneTask(mt);}},45);};const sp=()=>{clearInterval(iv);if(p<100)iv=setInterval(()=>{p=Math.max(0,p-6);f.style.height=p+"%";tx.textContent=p+"%";if(p<=0)clearInterval(iv);},45);};c.addEventListener("pointerdown",e=>{e.preventDefault();st();});c.addEventListener("pointerup",sp);c.addEventListener("pointerleave",sp);}
+function miniSeq(b,mt){b.innerHTML=`<p class="muted center">Toca del 1 al 5 en orden.</p><div class="seqgrid" id="sg"></div>`;const cells=[1,2,3,4,5];while(cells.length<9)cells.push("");shuffle(cells);let nx=1;const g=$("sg");cells.forEach(v=>{const d=document.createElement("div");d.className="seqbtn";d.textContent=v;if(v!==""){d.onclick=()=>{if(v===nx){d.classList.add("go");nx++;beep(500+nx*80,.08);if(nx>5)doneTask(mt);}else{nx=1;g.querySelectorAll(".seqbtn").forEach(x=>x.classList.remove("go"));beep(160,.15,"square");toast("¡Mal! De nuevo",1000);}};}g.appendChild(d);});}
+function miniWires(b,mt){const cols=["#e23b3b","#ffd23f","#2fd27a","#3b7fe2"];const right=shuffle(cols.slice());b.innerHTML=`<p class="muted center">Une cada color con su igual.</p><div class="wires"><div class="wcol" id="wl"></div><div class="wcol" id="wr"></div></div>`;const L=$("wl"),R=$("wr");let sel=null,n=0;const done={};cols.forEach(c=>{const d=document.createElement("div");d.className="wnode";d.style.background=c;d.onclick=()=>{L.querySelectorAll(".wnode").forEach(x=>x.classList.remove("sel"));d.classList.add("sel");sel=c;};L.appendChild(d);});right.forEach(c=>{const d=document.createElement("div");d.className="wnode";d.style.background=c;d.onclick=()=>{if(!sel)return;if(sel===c&&!done[c]){done[c]=true;n++;d.style.outline="3px solid #fff";const ln=L.querySelector(`.wnode[style*="${c}"]`);beep(600,.08);sel=null;if(n>=cols.length)doneTask(mt);}else if(sel!==c){beep(160,.12,"square");}};R.appendChild(d);});}
+function miniPad(b,mt){const code=String(Math.floor(1000+Math.random()*9000));b.innerHTML=`<p class="muted center">Ingresa este código:</p><div class="keydisp">${code}</div><div class="keydisp" id="pin" style="color:var(--acc);min-height:1.4em"></div><div class="pad" id="pad"></div>`;const keys=["1","2","3","4","5","6","7","8","9","⌫","0","✓"];let cur="";const pad=$("pad"),inp=$("pin");keys.forEach(k=>{const d=document.createElement("div");d.className="key";d.textContent=k;d.onclick=()=>{beep(440,.05);if(k==="⌫")cur=cur.slice(0,-1);else if(k==="✓"){if(cur===code)doneTask(mt);else{toast("Código incorrecto",1000);cur="";}}else if(cur.length<4)cur+=k;inp.textContent=cur;if(cur===code)doneTask(mt);};pad.appendChild(d);});}
 
-/* ---------- FIN ---------- */
-function renderEnd(){
-  const w=gs.winner;
-  const iWon = (w.who==="impostor" && myRole==="impostor") || (w.who==="crew" && myRole==="crew");
-  $("endEmoji").textContent = w.who==="impostor"?"🔪":"🏆";
-  $("endTitle").textContent = w.who==="impostor"?"Ganan los impostores":"Ganan los tripulantes";
-  $("endTitle").style.color = w.who==="impostor"?"#ff8b97":"#8affc0";
-  $("endSub").textContent = w.reason + (myRole? (iWon?" — ¡Ganaste! 🎉":" — Perdiste 😅"):"");
-  const g=$("endImpostors"); g.innerHTML="";
-  (gs.impostorIds||[]).forEach(id=>{ const p=gs.players[id]; if(p) g.appendChild(playerChip(p,false)); });
-  if(isHost){ $("btnPlayAgain").style.display="block"; $("endWaitHost").style.display="none"; }
-  else{ $("btnPlayAgain").style.display="none"; $("endWaitHost").style.display="block"; }
-  beep(iWon?880:200,.3);
-}
+/* ======================= REUNIÓN ======================= */
+function renderMeeting(){const m=gs.meeting;if(!m)return;$("meetReason").textContent=m.reason;const meP=gs.players[me.id];const iVote=meP&&meP.alive;const myVote=m.votes[me.id];$("voteNote").textContent=iVote?(myVote?"Tu voto quedó registrado.":"Toca a quién expulsar."):"👻 Los fantasmas no votan.";const list=$("voteList");list.innerHTML="";Object.values(gs.players).forEach(p=>{const d=document.createElement("div");d.className="voterow"+(myVote===p.id?" sel":"")+(p.alive?"":" dead");const v=Object.values(m.votes).filter(x=>x===p.id).length;d.innerHTML=beanSVG(COLORS[p.color],40)+`<div class="nm">${esc(p.name)}${p.alive?"":" 💀"}</div><div class="vcount">${"🗳️".repeat(v)}</div>`;if(iVote&&!myVote&&p.alive)d.onclick=()=>send("vote",{target:p.id});list.appendChild(d);});const s=document.createElement("div");s.className="voterow"+(myVote==="skip"?" sel":"");const sv=Object.values(m.votes).filter(x=>x==="skip").length;s.innerHTML=`<div style="width:40px;text-align:center;font-size:1.4rem">⏭️</div><div class="nm">Saltar voto</div><div class="vcount">${"🗳️".repeat(sv)}</div>`;if(iVote&&!myVote)s.onclick=()=>send("vote",{target:"skip"});list.appendChild(s);tickMeeting();}
+function tickMeeting(){clearInterval(meetTick);const u=()=>{if(!gs||gs.phase!=="meeting"){clearInterval(meetTick);return;}$("meetTimer").textContent=Math.max(0,Math.ceil((gs.meeting.endsAt-Date.now())/1000));};u();meetTick=setInterval(u,300);}
+
+/* ======================= FIN ======================= */
+function renderEnd(){const w=gs.winner;const iWon=(w.who==="impostor"&&myRole==="impostor")||(w.who==="crew"&&myRole==="crew");$("endEmoji").textContent=w.who==="impostor"?"🔪":"🏆";$("endTitle").textContent=w.who==="impostor"?"Ganan los impostores":"Ganan los tripulantes";$("endTitle").style.color=w.who==="impostor"?"#ff8b97":"#8affc0";$("endSub").textContent=w.reason+(myRole?(iWon?" — ¡Ganaste! 🎉":" — Perdiste 😅"):"");const g=$("endImpostors");g.innerHTML="";(gs.impostorIds||[]).forEach(id=>{const p=gs.players[id];if(p)g.appendChild(chip(p,false));});if(isHost){$("btnPlayAgain").style.display="block";$("endWaitHost").style.display="none";}else{$("btnPlayAgain").style.display="none";$("endWaitHost").style.display="block";}beep(iWon?880:200,.3);}
 $("btnPlayAgain").onclick=()=>send("again",{});
 
-/* ---------- MINI-JUEGOS ---------- */
-const TASKTYPES=["hold","seq","wires","pad"];
-const TASKLABEL={ hold:"🔋 Descargar datos (mantén presionado)", seq:"🔢 Ingresar secuencia", wires:"🔌 Conectar cables", pad:"⌨️ Teclear el código" };
-function openModal(id){ $(id).classList.add("on"); }
-function closeModal(id){ $(id).classList.remove("on"); }
-$("taskModal").addEventListener("click",e=>{ if(e.target.id==="taskModal") closeModal("taskModal"); });
-$("killModal").addEventListener("click",e=>{ if(e.target.id==="killModal") closeModal("killModal"); });
+/* estrellas */
+(function(){const c=$("stars"),x=c.getContext("2d");let w,h,st=[];function rs(){w=c.width=innerWidth;h=c.height=innerHeight;st=[];for(let i=0;i<60;i++)st.push({x:Math.random()*w,y:Math.random()*h,r:Math.random()*1.4+.2,s:Math.random()*.3+.05});}rs();addEventListener("resize",rs);(function lp(){x.clearRect(0,0,w,h);x.fillStyle="#fff";st.forEach(s=>{s.y+=s.s;if(s.y>h)s.y=0;x.globalAlpha=s.r;x.beginPath();x.arc(s.x,s.y,s.r,0,7);x.fill();});x.globalAlpha=1;requestAnimationFrame(lp);})();})();
 
-function completeTask(t){
-  t.done=true;
-  closeModal("taskModal");
-  beep(880,.12); vibrate(30);
-  if(myRole==="crew") send("task",{});   // solo tripulante suma
-  renderTasks(true);
-  // feedback
-  const done=myTasks.filter(x=>x.done).length;
-  if(done===myTasks.length) toast("¡Terminaste todas tus tareas! ✅");
-}
-
-function openTask(t){
-  $("taskTitle").textContent = TASKLABEL[t.type];
-  const b=$("taskBody"); b.innerHTML="";
-  if(t.type==="hold") miniHold(b,t);
-  else if(t.type==="seq") miniSeq(b,t);
-  else if(t.type==="wires") miniWires(b,t);
-  else if(t.type==="pad") miniPad(b,t);
-  openModal("taskModal");
-}
-
-/* mantener presionado */
-function miniHold(b,t){
-  b.innerHTML=`<p class="muted center">Mantén presionado el círculo hasta llenarlo.</p>
-    <div class="hold" id="holdC"><div class="fill" id="holdF"></div><span id="holdT">0%</span></div>`;
-  const c=$("holdC"),f=$("holdF"),tx=$("holdT"); let p=0,iv=null;
-  const start=()=>{ clearInterval(iv); iv=setInterval(()=>{ p=Math.min(100,p+4); f.style.height=p+"%"; tx.textContent=p+"%"; if(p>=100){ clearInterval(iv); completeTask(t);} },45); };
-  const stop=()=>{ clearInterval(iv); if(p<100){ iv=setInterval(()=>{ p=Math.max(0,p-6); f.style.height=p+"%"; tx.textContent=p+"%"; if(p<=0)clearInterval(iv); },45);} };
-  c.addEventListener("pointerdown",e=>{e.preventDefault();start();});
-  c.addEventListener("pointerup",stop); c.addEventListener("pointerleave",stop);
-}
-/* secuencia numérica */
-function miniSeq(b,t){
-  b.innerHTML=`<p class="muted center">Toca los números del 1 al 5 en orden.</p><div class="seqgrid" id="seqG"></div>`;
-  const nums=[1,2,3,4,5]; const cells=[...nums]; while(cells.length<9)cells.push("");
-  shuffle(cells);
-  let next=1; const g=$("seqG");
-  cells.forEach(v=>{ const d=document.createElement("div"); d.className="seqbtn"; d.textContent=v;
-    if(v!==""){ d.onclick=()=>{ if(v===next){ d.classList.add("go"); next++; beep(500+next*80,.08); if(next>5) completeTask(t);} else { next=1; g.querySelectorAll(".seqbtn").forEach(x=>x.classList.remove("go")); beep(160,.15,"square"); toast("¡Mal! Empieza de nuevo",1200);} }; }
-    g.appendChild(d); });
-}
-/* conectar cables */
-function miniWires(b,t){
-  const cols=["#e23b3b","#ffd23f","#2fd27a","#3b7fe2"];
-  const right=[...cols]; shuffle(right);
-  b.innerHTML=`<p class="muted center">Toca un cable de la izquierda y luego su mismo color a la derecha.</p>
-    <div class="wires"><svg class="wsvg" id="wsvg"></svg>
-      <div class="wcol" id="wl"></div><div class="wcol" id="wr"></div></div>`;
-  const L=$("wl"),R=$("wr"); let sel=null,doneN=0; const mapped={};
-  cols.forEach((c,i)=>{ const n=document.createElement("div"); n.className="wnode"; n.style.background=c; n.dataset.c=c; n.dataset.side="l"; n.dataset.i=i;
-    n.onclick=()=>{ L.querySelectorAll(".wnode").forEach(x=>x.classList.remove("sel")); n.classList.add("sel"); sel=c; }; L.appendChild(n); });
-  right.forEach((c,i)=>{ const n=document.createElement("div"); n.className="wnode"; n.style.background=c; n.dataset.c=c; n.onclick=()=>{
-      if(!sel) return; if(sel===c && !mapped[c]){ mapped[c]=true; doneN++; n.style.outline="3px solid #fff"; L.querySelector(`.wnode[data-c="${CSS.escape(c)}"]`).classList.remove("sel"); L.querySelector(`.wnode[data-c="${CSS.escape(c)}"]`).style.opacity=".4"; beep(600,.08); sel=null; if(doneN>=cols.length) completeTask(t);} else if(sel!==c){ beep(160,.12,"square"); toast("Colores distintos",900);} };
-    R.appendChild(n); });
-}
-/* teclear código */
-function miniPad(b,t){
-  const code=String(Math.floor(1000+Math.random()*9000));
-  b.innerHTML=`<p class="muted center">Ingresa este código:</p><div class="keydisp" id="padTarget">${code}</div>
-    <div class="keydisp" id="padIn" style="color:var(--acc);min-height:1.6em"></div><div class="pad" id="pad"></div>`;
-  const keys=["1","2","3","4","5","6","7","8","9","⌫","0","✓"];
-  let cur=""; const pad=$("pad"),inp=$("padIn");
-  keys.forEach(k=>{ const d=document.createElement("div"); d.className="key"; d.textContent=k;
-    d.onclick=()=>{ beep(440,.05);
-      if(k==="⌫"){ cur=cur.slice(0,-1); }
-      else if(k==="✓"){ if(cur===code) completeTask(t); else { toast("Código incorrecto",1200); cur=""; } }
-      else if(cur.length<4){ cur+=k; }
-      inp.textContent=cur;
-      if(cur===code) completeTask(t);
-    }; pad.appendChild(d); });
-}
-
-/* ---------- helpers ---------- */
-function shuffle(a){ for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
-function esc(s){ return (s||"").replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
-
-/* ---------- fondo de estrellas ---------- */
-(function stars(){
-  const c=$("stars"),x=c.getContext("2d"); let w,h,st=[];
-  function rs(){ w=c.width=innerWidth; h=c.height=innerHeight; st=[]; for(let i=0;i<70;i++) st.push({x:Math.random()*w,y:Math.random()*h,r:Math.random()*1.4+.2,s:Math.random()*.3+.05}); }
-  rs(); addEventListener("resize",rs);
-  (function loop(){ x.clearRect(0,0,w,h); x.fillStyle="#fff"; st.forEach(s=>{ s.y+=s.s; if(s.y>h)s.y=0; x.globalAlpha=s.r; x.beginPath(); x.arc(s.x,s.y,s.r,0,7); x.fill(); }); x.globalAlpha=1; requestAnimationFrame(loop); })();
-})();
-
-// evitar que la pantalla se apague durante el juego (si el navegador lo permite)
-let wake=null;
-async function keepAwake(){ try{ wake=await navigator.wakeLock.request("screen"); }catch(e){} }
-document.addEventListener("click",()=>{ if(!wake) keepAwake(); },{once:true});
+let wake=null;document.addEventListener("click",async()=>{if(!wake)try{wake=await navigator.wakeLock.request("screen");}catch(e){}},{once:true});
 </script>
 </body>
 </html>
